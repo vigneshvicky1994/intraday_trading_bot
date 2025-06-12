@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Intraday Trading Dashboard</title>
+    <meta http-equiv="refresh" content="30">
+</head>
+<body>
+    <h1>📊 Intraday Trading Dashboard</h1>
+    <table border="1">
+        <tr><th>Type</th><th>Symbol</th><th>Action</th><th>Price</th><th>PnL</th><th>Time</th></tr>
+    </table>
+    <script>
+        const ws = new WebSocket("ws://" + location.host + "/ws/updates");
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            const row = document.createElement("tr");
+            ["type", "symbol", "action", "price", "pnl", "time"].forEach(key => {
+                const cell = document.createElement("td");
+                cell.innerText = data[key] || "-";
+                row.appendChild(cell);
+            });
+            document.querySelector("table").appendChild(row);
+        };
+    </script>
+</body>
+</html>
